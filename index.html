@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Routine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Scheherazade New', serif;
+            background: black;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            padding: 5px;
+            background: linear-gradient(90deg, #111, #333);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        #clock { font-size: 1.2em; font-weight: bold; margin: 3px 0; }
+        #date { font-size: 0.9em; color: #ddd; }
+        #current-task { font-size: 0.9em; color: #fff; margin: 3px 0; }
+        #quote {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #FFD700;
+            padding: 15px;
+            margin-top: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: pre-wrap; /* লাইন ব্রেক সমর্থনের জন্য */
+        }
+        #routine, #pomodoro, #tips { margin-top: 30px; }
+        .main-task {
+            border: 2px solid #888;
+            padding: 15px;
+            margin: 20px auto;
+            width: 85%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .sub-task {
+            border: 1px solid #555;
+            padding: 10px;
+            margin: 10px auto;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .active { background: rgba(0, 255, 0, 0.3); border-color: lime; font-weight: bold; }
+        .next { background: rgba(255, 255, 0, 0.3); border-color: yellow; }
+        footer { margin-top: 20px; padding: 10px; background: #222; color: white; }
+        #tips {
+            border: 2px solid #FFD700;
+            padding: 15px;
+            margin: 20px auto;
+            width: 85%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+        #pomodoro {
+            width: 85%;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #888;
+        }
+        #pomodoro h2 { color: #FFD700; font-size: 1.5em; margin: 10px 0; }
+        #timer { font-size: 2.5em; font-weight: bold; margin: 20px 0; color: #fff; }
+        #pomodoro button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Scheherazade New', serif;
+            color: white;
+        }
+        .start { background-color: #5cb85c; }
+        .pause { background-color: #f0ad4e; }
+        .reset { background-color: #d9534f; }
+        .add-time { background-color: #0275d8; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌟 Daily Routine</h1>
+        <div id="clock"></div>
+        <div id="date"></div>
+        <p id="current-task"></p>
+    </header>
+    <div id="quote"></div>
+    <section id="routine">
+        <div class="main-task">
+            <h2>🌅 সকাল (পড়াশোনা + প্রস্তুতি)</h2>
+            <div class="sub-task" data-start="06:30" data-end="08:00">৬:৩০ - ৮:০০ AM → বাংলা ব্যাকরণ (ধ্বনি, সন্ধি, শব্দ, বাক্য, সমাস ইত্যাদি)</div>
+            <div class="sub-task" data-start="08:00" data-end="08:30">৮:০০ - ৮:৩০ AM → নাস্তা + রিল্যাক্স</div>
+            <div class="sub-task" data-start="08:30" data-end="10:30">৮:৩০ - ১০:৩০ AM → ইংলিশ গ্রামার (Parts of Speech, Tense, Narration ইত্যাদি)</div>
+            <div class="sub-task" data-start="10:30" data-end="11:15">১০:৩০ - ১১:১৫ AM → ইংলিশ ফ্রি হ্যান্ড রাইটিং (Essay + Translation)</div>
+            <div class="sub-task" data-start="11:15" data-end="11:30">১১:১৫ - ১১:৩০ AM → ব্রেক</div>
+            <div class="sub-task" data-start="11:30" data-end="13:30">১১:৩০ AM - ১:৩০ PM → গণিত (Arithmetic/Geometry/Mix Practice)</div>
+        </div>
+        <div class="main-task">
+            <h2>🍛 দুপুর (লাঞ্চ + ক্লাস)</h2>
+            <div class="sub-task" data-start="13:30" data-end="15:00">১:৩০ - ৩:০০ PM → লাঞ্চ + বিশ্রাম</div>
+            <div class="sub-task" data-start="15:00" data-end="17:00">৩:০০ - ৫:০০ PM → কোচিং (৪ দিন) / ICT + Practice (৩ দিন)</div>
+        </div>
+        <div class="main-task">
+            <h2>🌞 বিকেল (জ্ঞান + বিশ্রাম)</h2>
+            <div class="sub-task" data-start="17:30" data-end="18:30">৫:৩০ - ৬:৩০ PM → সাধারণ জ্ঞান (বাংলাদেশ/আন্তর্জাতিক + সাম্প্রতিক)</div>
+            <div class="sub-task" data-start="18:30" data-end="19:00">৬:৩০ - ৭:০০ PM → বিকেলের নাস্তা + হালকা বিশ্রাম</div>
+        </div>
+        <div class="main-task">
+            <h2>🌃 রাত (পড়াশোনা + ঘুম)</h2>
+            <div class="sub-task" data-start="19:00" data-end="21:00">৭:০০ - ৯:০০ PM → ইংলিশ ভোকাবুলারি (GRE) + রিডিং কম্প্রিহেনশন</div>
+            <div class="sub-task" data-start="21:00" data-end="21:30">৯:০০ - ৯:৩০ PM → ডিনার + ওয়াক</div>
+            <div class="sub-task" data-start="21:30" data-end="23:00">৯:৩০ - ১১:০০ PM → মডেল টেস্ট / রিভিশন</div>
+            <div class="sub-task" data-start="23:30" data-end="06:30">১১:৩০ PM - ৬:৩০ AM → ঘুম (৭ ঘণ্টা)</div>
+        </div>
+    </section>
+    <section id="pomodoro">
+        <h2>🍅 পমোডোরো টাইমার</h2>
+        <div id="timer">২৫:০০</div>
+        <button class="start" onclick="startTimer()">শুরু</button>
+        <button class="pause" onclick="pauseTimer()">বিরতি</button>
+        <button class="reset" onclick="resetTimer()">রিসেট</button>
+        <button class="add-time" onclick="addTime()">+৫ মিনিট</button>
+    </section>
+    <section id="tips">
+        <h2>📌 বিশেষ টিপস</h2>
+        <ul>
+            <li><strong>ধারাবাহিকতা রাখো:</strong> ৭ দিন টানা রুটিন ফলো করো, তারপর এটি অভ্যাসে পরিণত হবে।</li>
+            <li><strong>ব্রেক নাও:</strong> প্রতি ২৫-৩০ মিনিট পড়ার পর ৫ মিনিট ব্রেক নিলে মন সতেজ থাকবে।</li>
+            <li><strong>প্রতিদিন চেক করো:</strong> রাতে দেখো আজকের পড়া কভার হয়েছে কি না।</li>
+            <li><strong>ফোকাস বাড়াও:</strong> পড়ার সময় ফোন দূরে রাখো, নোটিফিকেশন বন্ধ করো।</li>
+            <li><strong>রিভিশন করো:</strong> সপ্তাহে ১ দিন (শনিবার) পুরো সপ্তাহের রিভিশন করো।</li>
+        </ul>
+        <p>এই রুটিনটি ৯ মাসের মধ্যে তোমাকে প্রো-লেভেলে নিয়ে যাবে। শুধু শুরু করো, আর ধৈর্য ধরো। 🔥 সাফল্য তোমার জন্য অপেক্ষা করছে! ✨</p>
+    </section>
+    <footer>
+        <p>© Jannatun Naeem Tushar</p>
+    </footer>
+    <audio id="alarm" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+    <script>
+        function timeTo24Hour(timeStr) {
+            const [time, modifier] = timeStr.split(' ');
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours, 10);
+            if (modifier === 'PM' && hours !== 12) hours += 12;
+            if (modifier === 'AM' && hours === 12) hours = 0;
+            return `${hours.toString().padStart(2, '0')}:${minutes}`;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Dhaka', hour12: true, hour: '2-digit', minute: '2-digit' };
+            const timeString = now.toLocaleTimeString('bn-BD', options);
+            const dateString = now.toLocaleDateString('bn-BD', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('clock').innerText = `🕒 ${timeString}`;
+            document.getElementById('date').innerText = `📅 ${dateString}`;
+            highlightTask(now);
+        }
+
+        function highlightTask(currentDate) {
+            const tasks = document.querySelectorAll('.sub-task');
+            let activeTask = null;
+            let nextTask = null;
+            const currentTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+            tasks.forEach(task => {
+                let startTime = task.dataset.start;
+                let endTime = task.dataset.end;
+                const isNextDay = endTime < startTime;
+                const currentTimeMinutes = parseInt(currentTime.split(':')[0]) * 60 + parseInt(currentTime.split(':')[1]);
+                const startTimeMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
+                let endTimeMinutes = parseInt(endTime.split(':')[0]) * 60 + parseInt(endTime.split(':')[1]);
+                if (isNextDay && currentTimeMinutes < startTimeMinutes) endTimeMinutes += 24 * 60;
+                if (startTime <= currentTime && (currentTime < endTime || (isNextDay && currentTimeMinutes < endTimeMinutes))) {
+                    activeTask = task;
+                } else if (!activeTask && startTime > currentTime && !nextTask) {
+                    nextTask = task;
+                }
+            });
+            tasks.forEach(task => task.classList.remove('active', 'next'));
+            let taskText = "";
+            if (activeTask) {
+                activeTask.classList.add('active');
+                taskText = `📌 আপনি এখন: ${activeTask.innerText}`;
+            }
+            if (nextTask) {
+                nextTask.classList.add('next');
+                taskText += `\n⏭ পরবর্তী: ${nextTask.innerText}`;
+            }
+            document.getElementById('current-task').innerText = taskText;
+        }
+
+        // উক্তি পরিচালনা
+        const quotes = [
+            "❝ ধৈর্য মানে নিঃস্পৃহভাবে সহ্য করা নয়, বরং প্রক্রিয়ার শেষটা দেখতে পাওয়া। ধৈর্য মানে কাঁটার দিকে তাকিয়ে গোলাপ দেখা, রাতের দিকে তাকিয়ে ভোর দেখা। যারা ধৈর্যহীন, তারা স্বল্পদৃষ্টিসম্পন্ন, যারা পরিণাম দেখতে পায় না। আল্লাহর প্রেমিকরা কখনো ধৈর্য হারায় না, কারণ তারা জানে, এক ফালি চাঁদকে পূর্ণিমায় রূপান্তরিত হতে সময়ের প্রয়োজন। ❞\n          — শামস তাবরিজি",
+            "❝ ধৈর্য শুধুমাত্র কষ্ট সহ্য করা নয়, বরং আল্লাহর ইচ্ছার প্রতি পূর্ণ সমর্পণ। আইয়ুব (আ.) আল্লাহ ছাড়া অন্য কারো কাছে অভিযোগ করেননি, বরং তিনি একমাত্র আল্লাহর কাছেই অভিযোগ করেছিলেন, তাই আল্লাহ তাঁকে ধৈর্যের জন্য প্রশংসা করেছেন। ❞\n          — ইবনে আরাবি",
+            "❝ ধৈর্য তিক্ত, কিন্তু এর ফল মধুর। ধৈর্য আত্মার জন্য সেই ভেষজ যা তার সমস্ত রোগ নিরাময় করে। ধৈর্য হল সেই সেতু যা তোমাকে তোমার কাঙ্ক্ষিত গন্তব্যে নিয়ে যায়। যদি সেতু ভাঙ্গো, তবে তোমার পথ হারিয়ে যাবে। ❞\n          — জালালুদ্দিন রুমি",
+            "❝ অবশ্যই আমি তোমাদিগকে পরীক্ষা করব কিছুটা ভয়, ক্ষুধা, মাল ও জানের ক্ষতি এবং ফল-ফসলের অভাবের মাধ্যমে। আর ধৈর্যশীলদের সুসংবাদ দাও। যারা তাদের উপর বিপদ এলে বলে, ‘আমরা তো আল্লাহরই এবং নিশ্চিতভাবে তাঁর দিকেই প্রত্যাবর্তনকারী’। তাদের প্রতি তাদের রবের পক্ষ থেকে রহমত ও শান্তি বর্ষিত হয়; আর তারাই হেদায়াতপ্রাপ্ত। ❞\n          — সূরা আল-বাকারা"
+        ];
+
+        function updateQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').innerText = randomQuote;
+        }
+
+        // প্রাথমিকভাবে একটি উক্তি দেখানো এবং ক্লক আপডেট
+        updateQuote();
+        updateClock();
+
+        // প্রতি ১৫ সেকেন্ডে উক্তি পরিবর্তন এবং প্রতি সেকেন্ডে ক্লক আপডেট
+        setInterval(updateQuote, 15000);
+        setInterval(updateClock, 1000);
+
+        // পমোডোরো টাইমার
+        let timeLeft = 25 * 60;
+        let timer = null;
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timer);
+                        isRunning = false;
+                        document.getElementById("alarm").play();
+                        alert("⏰ সময় শেষ! এখন বিশ্রাম নিন।");
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        function addTime() {
+            timeLeft += 5 * 60;
+            updateTimerDisplay();
+        }
+
+        // টাইমার প্রাথমিকভাবে আপডেট
+        updateTimerDisplay();
+    </script>
+</body>
+  </html>
