@@ -1,279 +1,501 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Routine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Scheherazade New', serif;
-            background: black;
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            padding: 5px;
-            background: linear-gradient(90deg, #111, #333);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        #clock { font-size: 1.2em; font-weight: bold; margin: 3px 0; }
-        #date { font-size: 0.9em; color: #ddd; }
-        #current-task { font-size: 0.9em; color: #fff; margin: 3px 0; }
-        #quote {
-            font-size: 1.2em;
-            font-style: italic;
-            color: #FFD700;
-            padding: 15px;
-            margin-top: 303px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            width: 85%;
-            margin-left: auto;
-            margin-right: auto;
-            white-space: pre-wrap; /* লাইন ব্রেক সমর্থনের জন্য */
-        }
-        #routine, #pomodoro, #tips { margin-top: 30px; }
-        .main-task {
-            border: 2px solid #888;
-            padding: 15px;
-            margin: 20px auto;
-            width: 85%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            text-align: center;
-        }
-        .sub-task {
-            border: 1px solid #555;
-            padding: 10px;
-            margin: 10px auto;
-            width: 90%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        .active { background: rgba(0, 255, 0, 0.3); border-color: lime; font-weight: bold; }
-        .next { background: rgba(255, 255, 0, 0.3); border-color: yellow; }
-        footer { margin-top: 20px; padding: 10px; background: #222; color: white; }
-        #tips {
-            border: 2px solid #FFD700;
-            padding: 15px;
-            margin: 20px auto;
-            width: 85%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            text-align: left;
-        }
-        #pomodoro {
-            width: 85%;
-            margin: 30px auto;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #888;
-        }
-        #pomodoro h2 { color: #FFD700; font-size: 1.5em; margin: 10px 0; }
-        #timer { font-size: 2.5em; font-weight: bold; margin: 20px 0; color: #fff; }
-        #pomodoro button {
-            padding: 10px 15px;
-            margin: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            font-family: 'Scheherazade New', serif;
-            color: white;
-        }
-        .start { background-color: #5cb85c; }
-        .pause { background-color: #f0ad4e; }
-        .reset { background-color: #d9534f; }
-        .add-time { background-color: #0275d8; }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>🌟 Daily Routine</h1>
-        <div id="clock"></div>
-        <div id="date"></div>
-        <p id="current-task"></p>
-    </header>
-    <div id="quote"></div>
-    <section id="routine">
-        <div class="main-task">
-            <h2>🌅 সকাল (পড়াশোনা + প্রস্তুতি)</h2>
-            <div class="sub-task" data-start="06:30" data-end="08:00">৬:৩০ - ৮:০০ AM → বাংলা ব্যাকরণ (ধ্বনি, সন্ধি, শব্দ, বাক্য, সমাস ইত্যাদি)</div>
-            <div class="sub-task" data-start="08:00" data-end="08:30">৮:০০ - ৮:৩০ AM → নাস্তা + রিল্যাক্স</div>
-            <div class="sub-task" data-start="08:30" data-end="10:30">৮:৩০ - ১০:৩০ AM → ইংলিশ গ্রামার (Parts of Speech, Tense, Narration ইত্যাদি)</div>
-            <div class="sub-task" data-start="10:30" data-end="11:15">১০:৩০ - ১১:১৫ AM → ইংলিশ ফ্রি হ্যান্ড রাইটিং (Essay + Translation)</div>
-            <div class="sub-task" data-start="11:15" data-end="11:30">১১:১৫ - ১১:৩০ AM → ব্রেক</div>
-            <div class="sub-task" data-start="11:30" data-end="13:30">১১:৩০ AM - ১:৩০ PM → গণিত (Arithmetic/Geometry/Mix Practice)</div>
-        </div>
-        <div class="main-task">
-            <h2>🍛 দুপুর (লাঞ্চ + ক্লাস)</h2>
-            <div class="sub-task" data-start="13:30" data-end="15:00">১:৩০ - ৩:০০ PM → লাঞ্চ + বিশ্রাম</div>
-            <div class="sub-task" data-start="15:00" data-end="17:00">৩:০০ - ৫:০০ PM → কোচিং (৪ দিন) / ICT + Practice (৩ দিন)</div>
-        </div>
-        <div class="main-task">
-            <h2>🌞 বিকেল (জ্ঞান + বিশ্রাম)</h2>
-            <div class="sub-task" data-start="17:30" data-end="18:30">৫:৩০ - ৬:৩০ PM → সাধারণ জ্ঞান (বাংলাদেশ/আন্তর্জাতিক + সাম্প্রতিক)</div>
-            <div class="sub-task" data-start="18:30" data-end="19:00">৬:৩০ - ৭:০০ PM → বিকেলের নাস্তা + হালকা বিশ্রাম</div>
-        </div>
-        <div class="main-task">
-            <h2>🌃 রাত (পড়াশোনা + ঘুম)</h2>
-            <div class="sub-task" data-start="19:00" data-end="21:00">৭:০০ - ৯:০০ PM → ইংলিশ ভোকাবুলারি (GRE) + রিডিং কম্প্রিহেনশন</div>
-            <div class="sub-task" data-start="21:00" data-end="21:30">৯:০০ - ৯:৩০ PM → ডিনার + ওয়াক</div>
-            <div class="sub-task" data-start="21:30" data-end="23:00">৯:৩০ - ১১:০০ PM → মডেল টেস্ট / রিভিশন</div>
-            <div class="sub-task" data-start="23:30" data-end="06:30">১১:৩০ PM - ৬:৩০ AM → ঘুম (৭ ঘণ্টা)</div>
-        </div>
-    </section>
-    <section id="pomodoro">
-        <h2>🍅 পমোডোরো টাইমার</h2>
-        <div id="timer">২৫:০০</div>
-        <button class="start" onclick="startTimer()">শুরু</button>
-        <button class="pause" onclick="pauseTimer()">বিরতি</button>
-        <button class="reset" onclick="resetTimer()">রিসেট</button>
-        <button class="add-time" onclick="addTime()">+৫ মিনিট</button>
-    </section>
-    <section id="tips">
-        <h2>📌 টিপস</h2>
-        <ul>
-            <li><strong>ধারাবাহিকতা রাখো:</strong> ৭ দিন টানা রুটিন ফলো করো, তারপর এটি অভ্যাসে পরিণত হবে।</li>
-            <li><strong>ব্রেক নাও:</strong> প্রতি ২৫-৩০ মিনিট পড়ার পর ৫ মিনিট ব্রেক নিলে মন সতেজ থাকবে।</li>
-            <li><strong>প্রতিদিন চেক করো:</strong> রাতে দেখো আজকের পড়া কভার হয়েছে কি না।</li>
-            <li><strong>ফোকাস বাড়াও:</strong> পড়ার সময় ফোন দূরে রাখো, নোটিফিকেশন বন্ধ করো।</li>
-            <li><strong>রিভিশন করো:</strong> সপ্তাহে ১ দিন (শনিবার) পুরো সপ্তাহের রিভিশন করো।</li>
-        </ul>
-        <p>এই রুটিনটি ৯ মাসের মধ্যে তোমাকে প্রো-লেভেলে নিয়ে যাবে। শুধু শুরু করো, আর ধৈর্য ধরো। 🔥 সাফল্য তোমার জন্য অপেক্ষা করছে! ✨</p>
-    </section>
-    <footer>
-        <p>© Jannatun Naeem Tushar</p>
-    </footer>
-    <audio id="alarm" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
-    <script>
-        function timeTo24Hour(timeStr) {
-            const [time, modifier] = timeStr.split(' ');
-            let [hours, minutes] = time.split(':');
-            hours = parseInt(hours, 10);
-            if (modifier === 'PM' && hours !== 12) hours += 12;
-            if (modifier === 'AM' && hours === 12) hours = 0;
-            return `${hours.toString().padStart(2, '0')}:${minutes}`;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>২ মাসে বিসিএস প্রিলিমিনারিতে ১২৫ নম্বরের প্রস্তুতির রোডম্যাম</title>
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Hind Siliguri', sans-serif;
+                background: #0c0c0c;
+                color: #e0e0e0;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+                line-height: 1.6;
+            }
 
-        function updateClock() {
-            const now = new Date();
-            const options = { timeZone: 'Asia/Dhaka', hour12: true, hour: '2-digit', minute: '2-digit' };
-            const timeString = now.toLocaleTimeString('bn-BD', options);
-            const dateString = now.toLocaleDateString('bn-BD', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('clock').innerText = `🕒 ${timeString}`;
-            document.getElementById('date').innerText = `📅 ${dateString}`;
-            highlightTask(now);
-        }
+            header {
+                padding: 5px;
+                background: linear-gradient(90deg, #1a1a1a, #333);
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                border-bottom: 2px solid gold;
+            }
 
-        function highlightTask(currentDate) {
-            const tasks = document.querySelectorAll('.sub-task');
-            let activeTask = null;
-            let nextTask = null;
-            const currentTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
-            tasks.forEach(task => {
-                let startTime = task.dataset.start;
-                let endTime = task.dataset.end;
-                const isNextDay = endTime < startTime;
-                const currentTimeMinutes = parseInt(currentTime.split(':')[0]) * 60 + parseInt(currentTime.split(':')[1]);
-                const startTimeMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
-                let endTimeMinutes = parseInt(endTime.split(':')[0]) * 60 + parseInt(endTime.split(':')[1]);
-                if (isNextDay && currentTimeMinutes < startTimeMinutes) endTimeMinutes += 24 * 60;
-                if (startTime <= currentTime && (currentTime < endTime || (isNextDay && currentTimeMinutes < endTimeMinutes))) {
-                    activeTask = task;
-                } else if (!activeTask && startTime > currentTime && !nextTask) {
-                    nextTask = task;
+            #clock {
+                font-size: 1.2em;
+                font-weight: 700;
+                margin: 3px 0
+            }
+
+            #date {
+                font-size: .9em;
+                color: #ccc
+            }
+
+            #current-task {
+                font-size: .9em;
+                color: #fff;
+                margin: 3px 0;
+                white-space: pre-wrap;
+            }
+
+            #quote {
+                font-size: 1.1em;
+                font-style: italic;
+                color: #ffd700;
+                padding: 15px;
+                margin-top: 260px;
+                background: rgba(255, 255, 255, .05);
+                border-left: 5px solid gold;
+                border-radius: 5px;
+                width: 85%;
+                margin-left: auto;
+                margin-right: auto;
+                white-space: pre-wrap;
+                text-align: left;
+            }
+
+            #guidelines,
+            #pomodoro,
+            #routine,
+            #study-plan,
+            #revision-plan,
+            #tips {
+                margin-top: 30px
+            }
+
+            .section-title {
+                color: gold;
+                font-size: 1.6em;
+                margin-bottom: 15px;
+                border-bottom: 2px solid #555;
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+
+            .main-task {
+                border: 1px solid #444;
+                padding: 15px;
+                margin: 20px auto;
+                width: 85%;
+                background: rgba(255, 255, 255, .03);
+                border-radius: 10px;
+                text-align: center
+            }
+            .main-task h2 {
+                color: #0dcaf0;
+                font-size: 1.3em;
+            }
+
+            .sub-task {
+                border: 1px solid #555;
+                padding: 10px;
+                margin: 10px auto;
+                width: 90%;
+                background: rgba(255, 255, 255, .05);
+                border-radius: 10px
+            }
+
+            .active {
+                background: rgba(0, 255, 0, .2);
+                border-color: #0f0;
+                font-weight: 700
+            }
+
+            .next {
+                background: rgba(255, 255, 0, .2);
+                border-color: #ff0
+            }
+            
+            .coaching-day {
+                border-color: #0dcaf0;
+                background: rgba(13, 202, 240, .1);
+            }
+
+            /* Table Styles */
+            #study-plan, #revision-plan {
+                width: 90%;
+                margin: 40px auto;
+                text-align: center;
+            }
+            
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: rgba(255, 255, 255, .05);
+                font-size: 0.9em;
+            }
+            th, td {
+                border: 1px solid #444;
+                padding: 12px;
+                text-align: left;
+            }
+            thead {
+                background-color: rgba(255, 215, 0, 0.15);
+            }
+            th {
+                font-weight: 700;
+                text-align: center;
+            }
+            tbody tr:nth-child(even) {
+                background-color: rgba(255, 255, 255, 0.07);
+            }
+            
+            footer {
+                margin-top: 20px;
+                padding: 10px;
+                background: #1a1a1a;
+                color: #aaa
+            }
+
+            #guidelines, #tips {
+                border: 1px solid gold;
+                padding: 20px;
+                margin: 20px auto;
+                width: 85%;
+                background: rgba(255, 215, 0, .05);
+                border-radius: 10px;
+                text-align: left
+            }
+            
+            #guidelines ul, #tips ul {
+                list-style-type: '✔ ';
+                padding-left: 20px;
+            }
+            #guidelines li, #tips li {
+                margin-bottom: 10px;
+            }
+
+            #pomodoro {
+                width: 85%;
+                margin: 30px auto;
+                background: rgba(255, 255, 255, .03);
+                padding: 20px;
+                border-radius: 10px;
+                border: 1px solid #444
+            }
+
+            #pomodoro button {
+                padding: 10px 15px;
+                margin: 5px;
+                font-size: 1em;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                font-family: 'Hind Siliguri', sans-serif;
+                color: #fff
+            }
+
+            .start { background-color: #5cb85c }
+            .pause { background-color: #f0ad4e }
+            .reset { background-color: #d9534f }
+            .add-time { background-color: #0275d8 }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>🎯 ক্র্যাক বিসিএস প্রিলিমিনারি</h1>
+            <div id="clock"></div>
+            <div id="date"></div>
+            <p id="current-task"></p>
+        </header>
+        <div id="quote"></div>
+        
+ 
+
+        <section id="routine">
+            <h2 class="section-title">দৈনিক রুটিন</h2>
+            <div class="main-task">
+                <h2>🌅 ভোর ও সকাল (একাগ্রতার সেরা সময়)</h2>
+                <div class="sub-task" data-start="05:00" data-end="06:30">৫:০০ - ৬:৩০ AM → **পড়া ১:** বিশ্লেষণধর্মী বিষয় (গণিত/ইংরেজি গ্রামার/মানসিক দক্ষতা)</div>
+                <div class="sub-task" data-start="06:30" data-end="06:45">৬:৩০ - ৬:৪৫ AM → বিরতি ও ফ্রেশ হওয়া</div>
+                <div class="sub-task" data-start="06:45" data-end="08:00">৬:৪৫ - ৮:০০ AM → **পড়া ২:** মুখস্থনির্ভর বিষয় (বাংলাদেশ/আন্তর্জাতিক/সাহিত্য/বিজ্ঞান)</div>
+                <div class="sub-task" data-start="08:00" data-end="08:30">৮:০০ - ৮:৩০ AM → রিভিশন (সকালের পড়া)</div>
+                <div class="sub-task" data-start="08:30" data-end="12:00">৮:৩০ - ১২:০০ PM → নাস্তা, ব্যক্তিগত কাজ ও কোচিংয়ের প্রস্তুতি</div>
+            </div>
+            <div class="main-task">
+                <h2>☀️ দুপুর (ক্লাস ও বিশ্রাম)</h2>
+                <div class="sub-task" id="coaching-task" data-start="12:00" data-end="14:00">১২:০০ - ২:০০ PM → ❗ কোচিং ক্লাস (শুক্র, শনি, সোম-বুধ) / সেলফ-স্টাডি (রবি, বৃহঃ)</div>
+                <div class="sub-task" data-start="14:00" data-end="15:30">২:০০ - ৩:৩০ PM → দুপুরের খাবার ও বিশ্রাম</div>
+                <div class="sub-task" data-start="15:30" data-end="19:00">৩:৩০ - ৭:০০ PM → ব্যক্তিগত কাজ / হালকা ঘুম / ব্যায়াম / বিকালের নাস্তা</div>
+            </div>
+            <div class="main-task">
+                <h2>🌃 সন্ধ্যা ও রাত (চূড়ান্ত প্রস্তুতি)</h2>
+                <div class="sub-task" data-start="19:00" data-end="20:30">৭:০০ - ৮:৩০ PM → **পড়া ৩:** দিনের ৩য় বিষয় (ভূগোল/নৈতিকতা/কম্পিউটার)</div>
+                <div class="sub-task" data-start="20:30" data-end="20:45">৮:৩০ - ৮:৪৫ PM → বিরতি</div>
+                <div class="sub-task" data-start="20:45" data-end="21:45">৮:৪৫ - ৯:৪৫ PM → **অনুশীলন:** সকালে পড়া কঠিন বিষয়টির অনুশীলন বা মডেল টেস্ট</div>
+                <div class="sub-task" data-start="21:45" data-end="22:30">৯:৪৫ - ১০:৩০ PM → রাতের খাবার ও দিনের পড়ার নোট তৈরি</div>
+                <div class="sub-task" data-start="22:30" data-end="05:00">১০:৩০ PM - ৫:০০ AM → 🛌 ঘুম (সাড়ে ৬ ঘণ্টা)</div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="study-plan">
+            <h2 class="section-title">পর্ব ১: বিষয়ভিত্তিক স্টাডি প্ল্যান (৪৫ দিন)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>সপ্তাহ</th>
+                        <th>তারিখ</th>
+                        <th>প্রধান বিষয় ও নম্বর</th>
+                        <th>সকালের সেশনের ফোকাস</th>
+                        <th>সন্ধ্যার সেশনের ফোকাস</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>১</b></td>
+                        <td>২০ - ২৬ জুলাই</td>
+                        <td>মানসিক দক্ষতা, বাংলা সাহিত্য (২৫)</td>
+                        <td>মানসিক দক্ষতার বিভিন্ন অংশ (ভাষাগত যৌক্তিক বিচার, সমস্যা সমাধান ইত্যাদি)</td>
+                        <td>প্রাচীন ও মধ্যযুগ, রবীন্দ্রনাথ, নজরুল এবং মুক্তিযুদ্ধভিত্তিক সাহিত্য</td>
+                    </tr>
+                    <tr>
+                        <td><b>২</b></td>
+                        <td>২৭ জুলাই - ২ আগস্ট</td>
+                        <td>গাণিতিক যুক্তি, English Literature (২০)</td>
+                        <td>বীজগাণিতিক সূত্রাবলি, উৎপাদক, সূচক, লগারিদম, শতকরা, লাভ-ক্ষতি, ধারা</td>
+                        <td>Shakespeare, Wordsworth, Keats সহ প্রধান সাহিত্যিক ও Literary Terms</td>
+                    </tr>
+                     <tr>
+                        <td><b>৩</b></td>
+                        <td>৩ - ৯ আগস্ট</td>
+                        <td>English Grammar, সাধারণ বিজ্ঞান (~২০)</td>
+                        <td>Parts of Speech, Clause, Phrase & Idioms, Transformation, Correction</td>
+                        <td>মানবদেহ, রোগ, পুষ্টি, তেজস্ক্রিয়তা, রাসায়নিক নাম, আলো, ইলেকট্রনিক্স</td>
+                    </tr>
+                    <tr>
+                        <td><b>৪</b></td>
+                        <td>১০ - ১৬ আগস্ট</td>
+                        <td>বাংলা ব্যাকরণ, বাংলাদেশ বিষয়াবলি (২১)</td>
+                        <td>ধ্বনি, শব্দ, পদ, সমাস, সন্ধি, প্রত্যয়, উপসর্গ, বানান ও প্রয়োগ-অপপ্রয়োগ</td>
+                        <td>প্রাচীন ইতিহাস থেকে ব্রিটিশ আমল, ১৯৪৭-৭৫, সংবিধান ও সরকার ব্যবস্থা</td>
+                    </tr>
+                     <tr>
+                        <td><b>৫</b></td>
+                        <td>১৭ - ২৩ আগস্ট</td>
+                        <td>কম্পিউটার ও তথ্য প্রযুক্তি, আন্তর্জাতিক বিষয়াবলি (১৯)</td>
+                        <td>নেটওয়ার্কিং, টপোলজি, ডাটাবেজ, সংখ্যা পদ্ধতি, লজিক গেট, সাইবার অপরাধ</td>
+                        <td>জাতিসংঘ, বিশ্বব্যাংক, IMF, WTO এবং অন্যান্য গুরুত্বপূর্ণ আন্তর্জাতিক সংস্থা</td>
+                    </tr>
+                    <tr>
+                        <td><b>৬</b></td>
+                        <td>২৪ - ৩০ আগস্ট</td>
+                        <td>ভূগোল, নৈতিকতা, বাংলাদেশ বিষয়াবলি (২৩)</td>
+                        <td>বাংলাদেশের ও আন্তর্জাতিক ভৌগোলিক বিষয়, সীমানা, নদ-নদী, দুর্যোগ ব্যবস্থাপনা</td>
+                        <td>জনশুমারি, বাজেট, কৃষি, জনপদ, নৃগোষ্ঠী, জাতীয় অর্জন ও নৈতিকতার মতবাদ</td>
+                    </tr>
+                    <tr>
+                        <td><b>৭</b></td>
+                        <td>৩১ আগস্ট - ২ সেপ্টেম্বর</td>
+                        <td>পর্যালোচনা ও দুর্বল স্থান পূরণ</td>
+                        <td colspan="2">বিগত সপ্তাহগুলোতে কঠিন মনে হওয়া বিষয়গুলো পুনরায় অনুশীলন এবং এখনো শেষ না হওয়া বা কঠিন মনে হওয়া টপিকগুলো ঝালিয়ে নেয়া।</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="revision-plan">
+            <h2 class="section-title">পর্ব ২: রিভিশন ও মডেল টেস্ট (১৫ দিন)</h2>
+             <table>
+                <thead>
+                    <tr>
+                        <th>সময়কাল</th>
+                        <th>সকালের সেশন (৫:০০ - ৮:৩০)</th>
+                        <th>সন্ধ্যার সেশন (৭:০০ - ১০:০০)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>৩ - ১৬ সেপ্টেম্বর</b><br>(১৪ দিন)</td>
+                        <td><b>দ্রুত রিভিশন:</b> প্রতিদিন চক্রাকারে ২টি করে বিষয় রিভিশন দিন। শুধু নিজের তৈরি করা নোট এবং বইয়ের দাগানো অংশ পড়ুন।</td>
+                        <td><b>মডেল টেস্ট:</b> ঘড়ি ধরে একটি পূর্ণাঙ্গ (২০০ নম্বরের) মডেল টেস্ট দিন এবং ভুলগুলো বিশ্লেষণ করুন।</td>
+                    </tr>
+                    <tr>
+                        <td><b>১৭ সেপ্টেম্বর</b><br>(পরীক্ষার আগের দিন)</td>
+                        <td colspan="2"><b>চূড়ান্ত প্রস্তুতি:</b> কোনো নতুন পড়া বা মডেল টেস্ট নয়। শুধু সূত্র, তারিখ, উক্তি এবং নিজের নোটগুলোতে শেষবারের মতো চোখ বুলিয়ে নিন। সম্পূর্ণ বিশ্রাম নিন এবং আত্মবিশ্বাসী থাকুন।</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section id="pomodoro">
+            <h2 class="section-title">🍅 পমোডোরো টাইমার</h2>
+            <div id="timer">২৫:০০</div>
+            <button class="start" onclick="startTimer()">শুরু</button>
+            <button class="pause" onclick="pauseTimer()">বিরতি</button>
+            <button class="reset" onclick="resetTimer()">রিসেট</button>
+            <button class="add-time" onclick="addTime()">+৫ মিনিট</button>
+        </section>
+        
+               <section id="guidelines">
+            <h2 class="section-title">প্রস্তুতির সাধারণ কৌশল</h2>
+            <ul>
+                <li><b>ধারাবাহিকতা:</b> প্রতিদিন নির্দিষ্ট সময়ে পড়তে বসুন। রুটিন মেনে চললে ৬০ দিনে এই সিলেবাস শেষ করা সম্ভব।</li>
+                <li><b>স্মার্ট স্টাডি:</b> সবকিছু পড়ার চেয়ে গুরুত্বপূর্ণ বিষয়গুলো ভালোভাবে বোঝা বেশি জরুরি। আপনার নির্বাচিত তালিকার ওপর পূর্ণ মনোযোগ দিন।</li>
+                <li><b>অনুশীলন:</b> গণিত, মানসিক দক্ষতা ও ইংরেজি গ্রামারের মতো বিষয়গুলো শুধু পড়লে হবে না, প্রতিদিন অনুশীলন করতে হবে।</li>
+                <li><b>নোট তৈরি:</b> কঠিন তথ্য (যেমন: সাল, উক্তি, সংবিধানের অনুচ্ছেদ) এর জন্য সংক্ষিপ্ত নোট বা ফ্ল্যাশকার্ড তৈরি করুন।</li>
+                <li><b>স্বাস্থ্য:</b> দৈনিক ৬-৭ ঘণ্টা ঘুম, পরিমিত খাবার এবং হালকা ব্যায়াম আপনাকে সতেজ রাখবে এবং পড়া মনে রাখতে সাহায্য করবে।</li>
+                <li><b>রিভিশন ও মডেল টেস্ট:</b> নতুন পড়ার পাশাপাশি পুরোনো পড়া ঝালিয়ে নেওয়া খুব জরুরি। শেষ ১৫ দিন শুধু রিভিশন এবং মডেল টেস্টের জন্য রাখুন।</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>© আপনার বিসিএস প্রস্তুতি যাত্রার জন্য শুভকামনা</p>
+        </footer>
+        <audio id="alarm" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+        <script>
+            function updateClock() {
+                const now = new Date();
+                const options = {
+                    timeZone: 'Asia/Dhaka',
+                    hour12: true,
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                const timeString = now.toLocaleTimeString('bn-BD', options);
+                const dateString = now.toLocaleDateString('bn-BD', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                document.getElementById('clock').innerText = `🕒 ${timeString}`;
+                document.getElementById('date').innerText = `📅 ${dateString}`;
+                highlightTask(now);
+            }
+
+            function highlightTask(currentDate) {
+                const tasks = document.querySelectorAll('.sub-task');
+                let activeTask = null;
+                let nextTask = null;
+                const currentDay = currentDate.getDay(); // 0=Sunday, 1=Monday, ..., 5=Friday, 6=Saturday
+                const currentTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+                
+                const coachingTask = document.getElementById('coaching-task');
+                const coachingDays = [5, 6, 1, 2, 3]; // Fri, Sat, Mon, Tue, Wed
+                if (coachingDays.includes(currentDay)) {
+                    coachingTask.classList.add('coaching-day');
+                } else {
+                     coachingTask.classList.remove('coaching-day');
                 }
-            });
-            tasks.forEach(task => task.classList.remove('active', 'next'));
-            let taskText = "";
-            if (activeTask) {
-                activeTask.classList.add('active');
-                taskText = `📌 আপনি এখন: ${activeTask.innerText}`;
-            }
-            if (nextTask) {
-                nextTask.classList.add('next');
-                taskText += `\n⏭ পরবর্তী: ${nextTask.innerText}`;
-            }
-            document.getElementById('current-task').innerText = taskText;
-        }
 
-        // উক্তি পরিচালনা
-        const quotes = [
-            "❝ ধৈর্য মানে নিঃস্পৃহভাবে সহ্য করা নয়, বরং প্রক্রিয়ার শেষটা দেখতে পাওয়া। ধৈর্য মানে কাঁটার দিকে তাকিয়ে গোলাপ দেখা, রাতের দিকে তাকিয়ে ভোর দেখা। যারা ধৈর্যহীন, তারা স্বল্পদৃষ্টিসম্পন্ন, যারা পরিণাম দেখতে পায় না। আল্লাহর প্রেমিকরা কখনো ধৈর্য হারায় না, কারণ তারা জানে, এক ফালি চাঁদকে পূর্ণিমায় রূপান্তরিত হতে সময়ের প্রয়োজন। ❞\n          — শামস তাবরিজি",
-            "❝ ধৈর্য শুধুমাত্র কষ্ট সহ্য করা নয়, বরং আল্লাহর ইচ্ছার প্রতি পূর্ণ সমর্পণ। আইয়ুব (আ.) আল্লাহ ছাড়া অন্য কারো কাছে অভিযোগ করেননি, বরং তিনি একমাত্র আল্লাহর কাছেই অভিযোগ করেছিলেন, তাই আল্লাহ তাঁকে ধৈর্যের জন্য প্রশংসা করেছেন। ❞\n          — ইবনে আরাবি",
-            "❝ ধৈর্য তিক্ত, কিন্তু এর ফল মধুর। ধৈর্য আত্মার জন্য সেই ভেষজ যা তার সমস্ত রোগ নিরাময় করে। ধৈর্য হল সেই সেতু যা তোমাকে তোমার কাঙ্ক্ষিত গন্তব্যে নিয়ে যায়। যদি সেতু ভাঙ্গো, তবে তোমার পথ হারিয়ে যাবে। ❞\n          — জালালুদ্দিন রুমি",
-            "❝ অবশ্যই আমি তোমাদিগকে পরীক্ষা করব কিছুটা ভয়, ক্ষুধা, মাল ও জানের ক্ষতি এবং ফল-ফসলের অভাবের মাধ্যমে। আর ধৈর্যশীলদের সুসংবাদ দাও। যারা তাদের উপর বিপদ এলে বলে, ‘আমরা তো আল্লাহরই এবং নিশ্চিতভাবে তাঁর দিকেই প্রত্যাবর্তনকারী’। তাদের প্রতি তাদের রবের পক্ষ থেকে রহমত ও শান্তি বর্ষিত হয়; আর তারাই হেদায়াতপ্রাপ্ত। ❞\n          — সূরা আল-বাকারা"
-        ];
-
-        function updateQuote() {
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').innerText = randomQuote;
-        }
-
-        // প্রাথমিকভাবে একটি উক্তি দেখানো এবং ক্লক আপডেট
-        updateQuote();
-        updateClock();
-
-        // প্রতি ১৫ সেকেন্ডে উক্তি পরিবর্তন এবং প্রতি সেকেন্ডে ক্লক আপডেট
-        setInterval(updateQuote, 15000);
-        setInterval(updateClock, 1000);
-
-        // পমোডোরো টাইমার
-        let timeLeft = 25 * 60;
-        let timer = null;
-        let isRunning = false;
-
-        function updateTimerDisplay() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function startTimer() {
-            if (!isRunning) {
-                isRunning = true;
-                timer = setInterval(() => {
-                    if (timeLeft > 0) {
-                        timeLeft--;
-                        updateTimerDisplay();
+                tasks.forEach(task => {
+                    let startTime = task.dataset.start;
+                    let endTime = task.dataset.end;
+                    const isNextDay = endTime < startTime;
+                    
+                    if (isNextDay) { 
+                        if (currentTime >= startTime || currentTime < endTime) {
+                           activeTask = task;
+                        }
                     } else {
-                        clearInterval(timer);
-                        isRunning = false;
-                        document.getElementById("alarm").play();
-                        alert("⏰ সময় শেষ! এখন বিশ্রাম নিন।");
+                        if (currentTime >= startTime && currentTime < endTime) {
+                            activeTask = task;
+                        }
                     }
-                }, 1000);
+                });
+
+                let activeFound = false;
+                tasks.forEach(task => {
+                    if (activeFound && !nextTask) {
+                        nextTask = task;
+                    }
+                    if (task === activeTask) {
+                        activeFound = true;
+                    }
+                });
+                if (activeTask && !nextTask) {
+                    nextTask = tasks[0];
+                }
+
+                tasks.forEach(task => task.classList.remove('active', 'next'));
+                
+                let taskText = "";
+                if (activeTask) {
+                    activeTask.classList.add('active');
+                    taskText = `📌 এখন চলছে: ${activeTask.innerText.split('→')[1] || activeTask.innerText}`;
+                } else {
+                    taskText = "📌 বর্তমানে কোনো নির্ধারিত কাজ নেই।";
+                }
+
+                if (nextTask) {
+                    nextTask.classList.add('next');
+                    taskText += `\n⏭ পরবর্তী কাজ: ${nextTask.innerText.split('→')[1] || nextTask.innerText}`;
+                }
+                document.getElementById('current-task').innerText = taskText;
             }
-        }
 
-        function pauseTimer() {
-            clearInterval(timer);
-            isRunning = false;
-        }
+            const quotes = ["❝ ধৈর্য মানে নিঃস্পৃহভাবে সহ্য করা নয়, বরং প্রক্রিয়ার শেষটা দেখতে পাওয়া। ধৈর্য মানে কাঁটার দিকে তাকিয়ে গোলাপ দেখা, রাতের দিকে তাকিয়ে ভোর দেখা। ❞\n          — শামস তাবরিজি", "❝ আমি নষ্ট করেছি সময়, এখন সময় নষ্ট করছে আমায়। ❞\n          — উইলিয়াম শেক্সপিয়র", "❝ অবশ্যই আমি তোমাদিগকে পরীক্ষা করব কিছুটা ভয়, ক্ষুধা, মাল ও জানের ক্ষতি এবং ফল-ফসলের অভাবের মাধ্যমে। আর ধৈর্যশীলদের সুসংবাদ দাও। ❞\n          — সূরা আল-বাকারা (২:১৫৫)", "❝ সাধারণ হতে অসাধারণ হওয়ার উপায় হলো, প্রতিদিন একটু একটু করে অসাধারণ কাজ করা। ❞\n          — অ্যারিস্টটল"];
 
-        function resetTimer() {
-            clearInterval(timer);
-            isRunning = false;
-            timeLeft = 25 * 60;
+            function updateQuote() {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                document.getElementById('quote').innerText = randomQuote;
+            }
+            
+            updateQuote();
+            updateClock();
+            
+            setInterval(updateQuote, 15000);
+            setInterval(updateClock, 1000);
+            
+            let timeLeft = 25 * 60;
+            let timer = null;
+            let isRunning = false;
+
+            function updateTimerDisplay() {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            function startTimer() {
+                if (!isRunning) {
+                    isRunning = true;
+                    timer = setInterval(() => {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            updateTimerDisplay();
+                        } else {
+                            clearInterval(timer);
+                            isRunning = false;
+                            document.getElementById("alarm").play();
+                            alert("⏰ সময় শেষ! এখন ৫ মিনিটের বিশ্রাম নিন।");
+                        }
+                    }, 1000);
+                }
+            }
+
+            function pauseTimer() {
+                clearInterval(timer);
+                isRunning = false;
+            }
+
+            function resetTimer() {
+                clearInterval(timer);
+                isRunning = false;
+                timeLeft = 25 * 60;
+                updateTimerDisplay();
+            }
+
+            function addTime() {
+                timeLeft += 5 * 60;
+                updateTimerDisplay();
+            }
+
             updateTimerDisplay();
-        }
+        </script>
+    </body>
+</html>
 
-        function addTime() {
-            timeLeft += 5 * 60;
-            updateTimerDisplay();
-        }
-
-        // টাইমার প্রাথমিকভাবে আপডেট
-        updateTimerDisplay();
-    </script>
-</body>
-  </html>
