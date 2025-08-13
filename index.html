@@ -3,12 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>২ মাসে বিসিএস প্রিলিমিনারিতে ১২৫ নম্বরের প্রস্তুতির রোডম্যাম</title>
+        <title>বিসিএস প্রস্তুতি ড্যাশবোর্ড</title>
+        <link href="https://fonts.maateen.me/adorsho-lipi/font.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="icon" type="image/x-icon" href="https://img.icons8.com/?size=100&id=9FUTeQc1xy7o&format=png&color=000000">
         <style>
             body {
-                font-family: 'Hind Siliguri', sans-serif;
+                font-family: 'Adorsho Lipi', sans-serif;
                 background: #0c0c0c;
                 color: #e0e0e0;
                 text-align: center;
@@ -26,6 +26,7 @@
                 left: 0;
                 z-index: 1000;
                 border-bottom: 2px solid gold;
+                
             }
 
             #clock {
@@ -70,7 +71,11 @@
             #tips {
                 margin-top: 30px
             }
-
+            
+            .header-title {
+              font-family: 'Hind Siliguri', sans-serif;
+            }
+            
             .section-title {
                 color: gold;
                 font-size: 1.6em;
@@ -78,6 +83,7 @@
                 border-bottom: 2px solid #555;
                 display: inline-block;
                 padding-bottom: 5px;
+                font-family: 'Hind Siliguri', sans-serif;
             }
 
             .main-task {
@@ -201,7 +207,7 @@
     </head>
     <body>
         <header>
-            <h1>🎯 ক্র্যাক বিসিএস প্রিলিমিনারি</h1>
+            <h1 class="header-title">🎯 ক্র্যাক বিসিএস প্রিলিমিনারি</h1>
             <div id="clock"></div>
             <div id="date"></div>
             <p id="current-task"></p>
@@ -363,7 +369,8 @@
                     timeZone: 'Asia/Dhaka',
                     hour12: true,
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    second: '2-digit'
                 };
                 const timeString = now.toLocaleTimeString('bn-BD', options);
                 const dateString = now.toLocaleDateString('bn-BD', {
